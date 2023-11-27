@@ -445,6 +445,7 @@ var Game = {
  
         // Stop the player from moving when there are no keys being pressed.
         document.addEventListener('keyup', function (key) { Pong.player.move = DIRECTION.IDLE; });
+        document.addEventListener('keyup', function (key) { Pong.player2.move = DIRECTION.IDLE; });
     },
  
     // Reset the ball location, the player turns and set a delay before the next round begins.
