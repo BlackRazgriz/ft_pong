@@ -45,12 +45,18 @@
     <p>Control the left player by using W & S keys</p>
     <div id="message">Press Up player 2</div>
     <script>
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'ArrowUp') {
-                const message = document.getElementById('message');
-                message.style.display = 'none';
-            }
-        });
+        function informScriptJS() {
+        if (typeof scriptFunction === 'function') {
+            scriptFunction('Up pressed');
+        }
+    }
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'ArrowUp') {
+            informScriptJS();
+            const message = document.getElementById('message');
+            message.style.display = 'none';
+        }
+    });
     </script>
     <script src="./script.js"></script>
 </body>

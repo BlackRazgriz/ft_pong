@@ -6,7 +6,7 @@ var DIRECTION = {
     LEFT: 3,
     RIGHT: 4
 };
- 
+var isIAActive = true;
 var rounds = [5, 5, 3, 3, 2];
 var colors = ['#1abc9c', '#2ecc71', '#3498db', '#8c52ff', '#9b59b6'];
  
@@ -24,6 +24,14 @@ var Ball = {
         };
     }
 };
+
+function scriptFunction(info) {
+    if (info === 'Up pressed') {
+        //stop ai from moving if P2 is detected
+       isIAActive = false;
+    }
+  
+}
  
 // The ai object (The two lines that move up and down)
 var Ai = {
@@ -52,6 +60,7 @@ var Game = {
         this.canvas.style.height = (this.canvas.height / 2) + 'px';
  
         this.player = Ai.new.call(this, 'left');
+    
         this.ai = Ai.new.call(this, 'right');
         this.ball = Ball.new.call(this);
  
@@ -150,36 +159,38 @@ var Game = {
             else if (this.ball.moveY === DIRECTION.DOWN) this.ball.y += (this.ball.speed / 1.5);
             if (this.ball.moveX === DIRECTION.LEFT) this.ball.x -= this.ball.speed;
             else if (this.ball.moveX === DIRECTION.RIGHT) this.ball.x += this.ball.speed;
- 
-            // Handle ai (AI) UP and DOWN movement
-            if (this.ai.y > this.ball.y - (this.ai.height / 2)) {
-                if (this.ball.moveX === DIRECTION.RIGHT) this.ai.y -= this.ai.speed / 1.5;
-                else this.ai.y -= this.ai.speed / 4;
-            }
-            if (this.ai.y < this.ball.y - (this.ai.height / 2)) {
-                if (this.ball.moveX === DIRECTION.RIGHT) this.ai.y += this.ai.speed / 1.5;
-                else this.ai.y += this.ai.speed / 4;
-            }
- 
-            // Handle ai (AI) wall collision
-            if (this.ai.y >= this.canvas.height - this.ai.height) this.ai.y = this.canvas.height - this.ai.height;
-            else if (this.ai.y <= 0) this.ai.y = 0;
- 
-            // Handle Player-Ball collisions
-            if (this.ball.x - this.ball.width <= this.player.x && this.ball.x >= this.player.x - this.player.width) {
-                if (this.ball.y <= this.player.y + this.player.height && this.ball.y + this.ball.height >= this.player.y) {
-                    this.ball.x = (this.player.x + this.ball.width);
-                    this.ball.moveX = DIRECTION.RIGHT;
- 
+            if (isIAActive)
+            {
+                // Handle ai (AI) UP and DOWN movement
+                if (this.ai.y > this.ball.y - (this.ai.height / 2)) {
+                    if (this.ball.moveX === DIRECTION.RIGHT) this.ai.y -= this.ai.speed / 1.5;
+                    else this.ai.y -= this.ai.speed / 4;
                 }
-            }
+                if (this.ai.y < this.ball.y - (this.ai.height / 2)) {
+                    if (this.ball.moveX === DIRECTION.RIGHT) this.ai.y += this.ai.speed / 1.5;
+                    else this.ai.y += this.ai.speed / 4;
+                }
+    
+                // Handle ai (AI) wall collision
+                if (this.ai.y >= this.canvas.height - this.ai.height) this.ai.y = this.canvas.height - this.ai.height;
+                else if (this.ai.y <= 0) this.ai.y = 0;
  
-            // Handle ai-ball collision
-            if (this.ball.x - this.ball.width <= this.ai.x && this.ball.x >= this.ai.x - this.ai.width) {
+             // Handle ai-ball collision
+             if (this.ball.x - this.ball.width <= this.ai.x && this.ball.x >= this.ai.x - this.ai.width) {
                 if (this.ball.y <= this.ai.y + this.ai.height && this.ball.y + this.ball.height >= this.ai.y) {
                     this.ball.x = (this.ai.x - this.ball.width);
                     this.ball.moveX = DIRECTION.LEFT;
+           
  
+                }
+            }
+        }
+    
+            // Handle Player-Ball collisions
+             if (this.ball.x - this.ball.width <= this.player.x && this.ball.x >= this.player.x - this.player.width) {
+                if (this.ball.y <= this.player.y + this.player.height && this.ball.y + this.ball.height >= this.player.y) {
+                    this.ball.x = (this.player.x + this.ball.width);
+                    this.ball.moveX = DIRECTION.RIGHT;
                 }
             }
         }
@@ -324,11 +335,12 @@ var Game = {
                 window.requestAnimationFrame(Pong.loop);
             }
  
-            // Handle up arrow and w key events
-            if (key.keyCode === 87) Pong.player.move = DIRECTION.UP;
- 
-            // Handle down arrow and s key events
-            if (key.keyCode === 83) Pong.player.move = DIRECTION.DOWN;
+            // P1 move 
+            if (key.keyCode === 87) Pong.player.move = DIRECTION.UP; // W key
+            if (key.keyCode === 83) Pong.player.move = DIRECTION.DOWN; // S key
+            // p2 move 
+            if (key.keyCode === 38) Pong.ai.move = DIRECTION.UP; // ArrowUp
+            if (key.keyCode === 40) Pong.ai.move = DIRECTION.DOWN; // ArrowDown
         });
  
         // Stop the player from moving when there are no keys being pressed.
