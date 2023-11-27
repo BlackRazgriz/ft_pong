@@ -5,29 +5,53 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        @import url('http://fonts.googleapis.com/css?family=Poppins&display=swap');
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            text-align: center;
+            background-color: ghostwhite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            position: fixed;
+            width:  100%;
+        }
+
+        #message {
+            font-size: 24px;
+            text-align: center;
+            animation: blink 1s infinite;
+            position : absolute;
+            top : 24%;
+            right : 25%;
+            transform: translate(0, -50%);
+        }
+
+        @keyframes blink {
+          0% { opacity: 1; }
+          50% { opacity: 0; }
+          100% { opacity: 1; }
+        }
+    </style>
 </head>
-<style>
-    @import url('http://fonts.googleapis.com/css?family=Poppins&display=swap');
-    * {
-        font-family: 'Poppins', sans-serif;
-    }
-    body {
-        text-align: center;
-        background-color: ghostwhite;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        flex-direction: column;
-        position: fixed;
-        width:  100%;
-    }
-</style>
 <body>
     <h1>PONG PING</h1>
     <canvas></canvas>
-    <p>Control the left player by using Up & Down arrow keys</p>
-    <script src="./script.js "></script>
-    
+    <p>Control the left player by using W & S keys</p>
+    <div id="message">Press Up player 2</div>
+    <script>
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowUp') {
+                const message = document.getElementById('message');
+                message.style.display = 'none';
+            }
+        });
+    </script>
+    <script src="./script.js"></script>
 </body>
 </html>
