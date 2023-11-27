@@ -304,9 +304,11 @@ var Game = {
             }
         }
         // Check to see if the ai/AI has won the round.
-        else if (this.ai.score === rounds[this.round]) {
-            this.over = true;
-            setTimeout(function () { Pong.endGameMenu('Game Over!'); }, 1000);
+        else if (this.player2.score === rounds[this.round]) {
+            if (!rounds[this.rounds + 1]) {
+                this.over = true;
+                setTimeout(function () { Pong.endGameMenu('P2 Wins !'); }, 1000);
+            }
         }
     }
     },
@@ -390,13 +392,20 @@ var Game = {
             (this.canvas.width / 2) - 300,
             200
         );
- 
+        if (isIAActive) {
         // Draw the paddles score (right)
         this.context.fillText(
             this.ai.score.toString(),
             (this.canvas.width / 2) + 300,
             200
         );
+        } else {
+            this.context.fillText(
+                this.player2.score.toString(),
+                (this.canvas.width / 2) + 300,
+                200
+            );
+        }
  
         // Change the font size for the center score text
         this.context.font = '30px Courier New';
