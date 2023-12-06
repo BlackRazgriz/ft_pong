@@ -295,7 +295,7 @@ var Game = {
             } else {
                 // If there is another round, reset all the values and increment the round number.
                 this.color = this._generateRoundColor();
-                this.player.score = this.ai.score = 0;
+                this.player.score =  this.ai.score = 0;
                 this.player.speed += 0.5;
                 this.ai.speed += 1;
                 this.ball.speed += 1;
@@ -303,11 +303,21 @@ var Game = {
 
             }
         }
-        // Check to see if the ai/AI has won the round.
+        // Check to see if the P2 has won the round.
         else if (this.player2.score === rounds[this.round]) {
-            if (!rounds[this.rounds + 1]) {
+            if (!rounds[this.round + 1]) {
                 this.over = true;
                 setTimeout(function () { Pong.endGameMenu('P2 Wins !'); }, 1000);
+            } 
+            else {
+                // If there is another round, reset all the values and increment the round number.
+                this.color = this._generateRoundColor();
+                this.player2.score = this.ai.score = 0;
+                this.player2.speed += 0.5;
+                this.ai.speed += 1;
+                this.ball.speed += 1;
+                this.round += 1;
+
             }
         }
     }
