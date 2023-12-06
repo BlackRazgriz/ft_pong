@@ -446,25 +446,68 @@ var Game = {
         if (!Pong.over) requestAnimationFrame(Pong.loop);
     },
  
+    // listen: function () {
+    //     document.addEventListener('keydown', function (key) {
+    //         // Handle the 'Press any key to begin' function and start the game.
+    //         if (Pong.running === false) {
+    //             Pong.running = true;
+    //             window.requestAnimationFrame(Pong.loop);
+    //         }
+ 
+    //         // P1 move 
+    //         if (key.keyCode === 87) Pong.player.move = DIRECTION.UP; // W key
+    //         if (key.keyCode === 83) Pong.player.move = DIRECTION.DOWN; // S key
+    //         // p2 move 
+    //         if (key.keyCode === 38) Pong.player2.move = DIRECTION.UP; // ArrowUp
+    //         if (key.keyCode === 40) Pong.player2.move = DIRECTION.DOWN; // ArrowDown
+    //     });
+ 
+    //     // Stop the player from moving when there are no keys being pressed.
+    //     document.addEventListener('keyup', function (key) { Pong.player.move = DIRECTION.IDLE; });
+    //     document.addEventListener('keyup', function (key) { Pong.player2.move = DIRECTION.IDLE; });
+    // },
+
     listen: function () {
-        document.addEventListener('keydown', function (key) {
-            // Handle the 'Press any key to begin' function and start the game.
+        const keyMap = {
+            'KeyW': DIRECTION.UP,
+            'KeyS': DIRECTION.DOWN,
+            'ArrowUp': DIRECTION.UP,
+            'ArrowDown': DIRECTION.DOWN
+        };
+    
+        const keyUpMap = {
+            'KeyW': DIRECTION.IDLE,
+            'KeyS': DIRECTION.IDLE,
+            'ArrowUp': DIRECTION.IDLE,
+            'ArrowDown': DIRECTION.IDLE
+        };
+    
+        document.addEventListener('keydown', function (event) {
             if (Pong.running === false) {
                 Pong.running = true;
                 window.requestAnimationFrame(Pong.loop);
             }
- 
-            // P1 move 
-            if (key.keyCode === 87) Pong.player.move = DIRECTION.UP; // W key
-            if (key.keyCode === 83) Pong.player.move = DIRECTION.DOWN; // S key
-            // p2 move 
-            if (key.keyCode === 38) Pong.player2.move = DIRECTION.UP; // ArrowUp
-            if (key.keyCode === 40) Pong.player2.move = DIRECTION.DOWN; // ArrowDown
+    
+            const move = keyMap[event.code];
+            if (move !== undefined) {
+                if (event.code === 'KeyW' || event.code === 'KeyS') {
+                    Pong.player.move = move;
+                } else {
+                    Pong.player2.move = move;
+                }
+            }
         });
- 
-        // Stop the player from moving when there are no keys being pressed.
-        document.addEventListener('keyup', function (key) { Pong.player.move = DIRECTION.IDLE; });
-        document.addEventListener('keyup', function (key) { Pong.player2.move = DIRECTION.IDLE; });
+    
+        document.addEventListener('keyup', function (event) {
+            const move = keyUpMap[event.code];
+            if (move !== undefined) {
+                if (event.code === 'KeyW' || event.code === 'KeyS') {
+                    Pong.player.move = move;
+                } else {
+                    Pong.player2.move = move;
+                }
+            }
+        });
     },
  
     // Reset the ball location, the player turns and set a delay before the next round begins.
